@@ -8,7 +8,7 @@ import static org.quicktheories.QuickTheory.qt;
 import static org.quicktheories.generators.SourceDSL.strings;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class Idempotent {
+public class IdempotentTest {
     @Test
     void test_casing_idempotent() {
         qt()

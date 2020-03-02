@@ -11,7 +11,7 @@ import static org.quicktheories.QuickTheory.qt;
 import static org.quicktheories.generators.SourceDSL.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class Invariant {
+public class InvariantTest {
 
     @Test
     void test_list_size_should_remain_constant_after_concatenation() {
