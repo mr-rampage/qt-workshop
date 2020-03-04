@@ -15,7 +15,7 @@ public final class MoneyDSL {
 
     public static Gen<Money> money() {
         return bigDecimals().ofBytes(32).withScale(2)
-                .zip(currentyUnit(), Money::of);
+                .zip(currencyUnit(), Money::of);
     }
 
     public static Gen<Money> positiveMoney() {
@@ -23,7 +23,7 @@ public final class MoneyDSL {
                 .map(Money::abs);
     }
 
-    private static Gen<CurrencyUnit> currentyUnit() {
+    private static Gen<CurrencyUnit> currencyUnit() {
         return locale()
                 .map(locale -> Monetary.getCurrency(locale));
     }
