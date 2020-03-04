@@ -1,13 +1,13 @@
 package com.intware.qt.generators;
 
-import ca.intware.qt.Item;
+import ca.intware.qt.Product;
 import org.quicktheories.core.Gen;
 
 import static org.quicktheories.generators.SourceDSL.strings;
 
-public final class ItemDSL {
-    public static Gen<Item> items() {
+public final class ProductDSL {
+    public static Gen<Product> products() {
         return strings().allPossible().ofLengthBetween(0, 50)
-                .map(Item::new);
+                .map(Product::new);
     }
 }

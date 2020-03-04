@@ -1,7 +1,7 @@
 package com.intware.qt;
 
 import ca.intware.qt.Cart;
-import ca.intware.qt.Item;
+import ca.intware.qt.Product;
 import ca.intware.qt.Price;
 import ca.intware.qt.SpecialPrice;
 import org.javamoney.moneta.Money;
@@ -26,12 +26,12 @@ public class TotalTest {
 
     @BeforeEach
     void setup() {
-        var priceCatalog = new HashMap<Item, Price>() {
+        var priceCatalog = new HashMap<Product, Price>() {
             {
-                put(new Item("A"), new Price(Money.of(50, CAD), new SpecialPrice(3, Money.of(150, CAD))));
-                put(new Item("B"), new Price(Money.of(30, CAD), new SpecialPrice(2, Money.of(45, CAD))));
-                put(new Item("C"), new Price(Money.of(20, CAD)));
-                put(new Item("D"), new Price(Money.of(15, CAD)));
+                put(new Product("A"), new Price(Money.of(50, CAD), new SpecialPrice(3, Money.of(150, CAD))));
+                put(new Product("B"), new Price(Money.of(30, CAD), new SpecialPrice(2, Money.of(45, CAD))));
+                put(new Product("C"), new Price(Money.of(20, CAD)));
+                put(new Product("D"), new Price(Money.of(15, CAD)));
             }
         };
         cart = new Cart(priceCatalog);

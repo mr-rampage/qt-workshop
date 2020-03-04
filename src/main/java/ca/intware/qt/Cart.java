@@ -5,16 +5,16 @@ import org.javamoney.moneta.Money;
 import java.util.*;
 
 public class Cart {
-    private final List<Item> purchaseList = new ArrayList<>();
-    private final Map<Item, Price> priceCatalog;
+    private final List<Product> purchaseList = new ArrayList<>();
+    private final Map<Product, Price> priceCatalog;
 
-    public Cart (final Map<Item, Price> priceCatalog) {
+    public Cart (final Map<Product, Price> priceCatalog) {
         Objects.requireNonNull(priceCatalog, "price catalog cannot be null");
         this.priceCatalog = new HashMap<>(priceCatalog);
     }
 
-    public void purchase(final Item item) {
-        purchaseList.add(new Item(item));
+    public void add(final Product product) {
+        purchaseList.add(new Product(product));
     }
 
     public Money total() {

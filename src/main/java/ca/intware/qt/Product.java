@@ -2,10 +2,10 @@ package ca.intware.qt;
 
 import java.util.Objects;
 
-public class Item {
+public class Product {
     public final String name;
 
-    public Item(final String name) {
+    public Product(final String name) {
         Objects.requireNonNull(name, "item name cannot be null");
 
         if (name.equals("")) {
@@ -15,7 +15,7 @@ public class Item {
         }
     }
 
-    public Item(final Item item) {
-        this.name = item.name;
+    public Product(final Product product) {
+        this.name = product.name;
     }
 }
