@@ -6,7 +6,7 @@ import org.quicktheories.core.Gen;
 
 import java.util.function.Function;
 
-import static com.intware.qt.generators.MoneyDSL.money;
+import static com.intware.qt.generators.MoneyDSL.positiveMoney;
 import static com.intware.qt.generators.SpecialPriceDSL.specialPrices;
 
 public final class PriceDSL {
@@ -15,10 +15,10 @@ public final class PriceDSL {
     }
 
     public static Gen<Price> regularPrices() {
-        return money().map((Function<Money, Price>) Price::new);
+        return positiveMoney().map((Function<Money, Price>) Price::new);
     }
 
     public static Gen<Price> rebatedPrices() {
-        return money().zip(specialPrices(), Price::new);
+        return positiveMoney().zip(specialPrices(), Price::new);
     }
 }
