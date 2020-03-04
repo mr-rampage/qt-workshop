@@ -24,7 +24,7 @@ public final class Price {
             throw new IllegalArgumentException("invalid price");
         } else {
             this.unitPrice = unitPrice;
-            this.specialPrice = Optional.of(specialPrice);
+            this.specialPrice = Optional.ofNullable(specialPrice);
         }
     }
 }

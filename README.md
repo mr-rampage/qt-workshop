@@ -46,7 +46,7 @@ Working with the [quick theories basic generators](https://github.com/quicktheor
 
 # Step 3: Test the property & implement (15 minutes, +10 minute discussion)
 
-Using the `Total.java`, test a property that you defined in Step 1. If you finish early, test more properties.
+Using the `Cart.java`, test a property that you defined in Step 1. If you finish early, test more properties.
 
 - Try configuring `quick theories` to run through more or fewer examples.
 
