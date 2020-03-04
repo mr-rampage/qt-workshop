@@ -13,8 +13,7 @@ public final class MoneyDSL {
     private static final Locale[] LOCALES = Locale.getAvailableLocales();
 
     public static Gen<Money> money() {
-        return integers()
-                .allPositive()
+        return integers().allPositive()
                 .zip(currentyUnit(), Money::of);
     }
 
@@ -24,8 +23,7 @@ public final class MoneyDSL {
     }
 
     private static Gen<Locale> locale() {
-        return integers()
-                .between(0, LOCALES.length)
+        return integers().between(0, LOCALES.length)
                 .map(index -> LOCALES[index]);
     }
 }
