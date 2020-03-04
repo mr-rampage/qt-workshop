@@ -2,8 +2,6 @@ package ca.intware.qt;
 
 import org.javamoney.moneta.Money;
 
-import javax.money.Monetary;
-import java.util.Locale;
 import java.util.Objects;
 
 import static java.util.Locale.CANADA;
