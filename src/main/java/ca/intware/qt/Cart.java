@@ -6,11 +6,11 @@ import java.util.*;
 
 public class Cart {
     private final List<Product> purchaseList = new ArrayList<>();
-    private final Map<Product, Price> priceCatalog;
+    private final ProductPriceCatalog productPriceCatalog;
 
-    public Cart (final Map<Product, Price> priceCatalog) {
-        Objects.requireNonNull(priceCatalog, "price catalog cannot be null");
-        this.priceCatalog = new HashMap<>(priceCatalog);
+    public Cart (final ProductPriceCatalog productPriceCatalog) {
+        Objects.requireNonNull(productPriceCatalog, "price catalog cannot be null");
+        this.productPriceCatalog = productPriceCatalog;
     }
 
     public void add(final Product product) {
