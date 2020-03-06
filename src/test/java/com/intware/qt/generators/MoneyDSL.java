@@ -24,11 +24,11 @@ public final class MoneyDSL {
     }
 
     private static Gen<CurrencyUnit> currencyUnit() {
-        return locale()
+        return locales()
                 .map(locale -> Monetary.getCurrency(locale));
     }
 
-    private static Gen<Locale> locale() {
+    public static Gen<Locale> locales() {
         return integers().between(0, LOCALES.length)
                 .map(index -> LOCALES[index]);
     }
