@@ -1,6 +1,7 @@
 package com.intware.qt.generators;
 
 import ca.intware.qt.Price;
+import ca.intware.qt.PriceWithSpecial;
 import org.quicktheories.core.Gen;
 
 import static com.intware.qt.generators.MoneyDSL.positiveMoney;
@@ -16,6 +17,6 @@ public final class PriceDSL {
     }
 
     public static Gen<Price> rebatedPrices() {
-        return positiveMoney().zip(specialPrices(), (price, special) -> new Price(price).withSpecial(special));
+        return positiveMoney().zip(specialPrices(), PriceWithSpecial::new);
     }
 }
