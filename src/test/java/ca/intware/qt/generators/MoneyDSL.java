@@ -1,4 +1,4 @@
-package com.intware.qt.generators;
+package ca.intware.qt.generators;
 
 import org.javamoney.moneta.Money;
 import org.quicktheories.core.Gen;

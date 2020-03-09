@@ -1,4 +1,4 @@
-package com.intware.qt.generators;
+package ca.intware.qt.generators;
 
 import ca.intware.qt.Cart;
 import org.quicktheories.core.Gen;

@@ -1,13 +1,11 @@
-package com.intware.qt.generators;
+package ca.intware.qt.generators;
 
 import ca.intware.qt.Price;
 import ca.intware.qt.Product;
 import ca.intware.qt.ProductPriceCatalog;
 import org.quicktheories.core.Gen;
 
-import static com.intware.qt.generators.MoneyDSL.locales;
-import static com.intware.qt.generators.PriceDSL.prices;
-import static com.intware.qt.generators.ProductDSL.products;
+import static ca.intware.qt.generators.MoneyDSL.locales;
 import static org.quicktheories.generators.SourceDSL.integers;
 import static org.quicktheories.generators.SourceDSL.lists;
 
@@ -26,7 +24,7 @@ public class ProductPriceCatalogDSL {
     }
 
     private static Gen<ProductPrice> productPrices() {
-        return products().zip(prices(), ProductPrice::new);
+        return ProductDSL.products().zip(PriceDSL.prices(), ProductPrice::new);
     }
 
     private static class ProductPrice {
