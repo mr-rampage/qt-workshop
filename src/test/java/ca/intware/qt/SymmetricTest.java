@@ -32,7 +32,7 @@ public class SymmetricTest {
     }
 
     @Test
-    void test_conversion_from_jpy_to_cny() {
+    void test_conversion_from_gbp_cny() {
         var money = Money.of(1310.72, "GBP");
         var toGBP = getConversion(money.getCurrency());
         var toCNY = getConversion(Monetary.getCurrency("CNY"));
