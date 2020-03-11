@@ -7,7 +7,9 @@ import org.quicktheories.generators.Generate;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.format.MonetaryFormats;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.Locale;
 
 import static org.quicktheories.generators.SourceDSL.bigDecimals;
@@ -17,6 +19,10 @@ public final class MoneyDSL {
     public static Gen<Money> money() {
         return bigDecimals().ofBytes(32).withScale(2)
                 .zip(currencyUnit(), Money::of);
+    }
+
+    public static Gen<Money> money(CurrencyUnit currencyUnit) {
+        return money().map(money -> Money.of(money.getNumber(), currencyUnit));
     }
 
     public static Gen<Money> positiveMoney() {
@@ -37,6 +43,10 @@ public final class MoneyDSL {
     }
 
     public static Gen<Locale> locales() {
-        return Generate.pick(Arrays.asList(MonetaryFormats.getAvailableLocales().toArray(new Locale[]{})));
+        return Generate.pick(new ArrayList<>(MonetaryFormats.getAvailableLocales()));
+    }
+
+    public static Gen<Currency> currencies() {
+        return Generate.pick(new ArrayList<>(Currency.getAvailableCurrencies()));
     }
 }

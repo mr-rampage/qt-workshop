@@ -4,19 +4,27 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.Stream;
+import javax.money.Monetary;
+import javax.money.convert.MonetaryConversions;
 
+import static ca.intware.qt.generators.MoneyDSL.currencies;
 import static org.quicktheories.QuickTheory.qt;
-import static org.quicktheories.generators.SourceDSL.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class InvariantTest {
 
     @Test
-    void test_list_size_should_remain_constant_after_concatenation() {
-        qt().forAll(
-                lists().of(strings().allPossible().ofLengthBetween(1, 100)).ofSizes(integers().from(0).upTo(50)),
-                lists().of(strings().allPossible().ofLengthBetween(1, 100)).ofSizes(integers().from(0).upTo(50))
-            ).check((a, b) -> Stream.concat(a.stream(), b.stream()).count() == a.size() + b.size());
+    void test_after_addition_currency_remains_the_same() {
+        qt()
+                .forAll(currencies())
+                .check(currency -> Monetary.isCurrencyAvailable(currency.getCurrencyCode()));
+    }
+
+    @Test
+    void test_converter_availability() {
+        qt()
+                .forAll(currencies(), currencies())
+                .assuming((a, b) -> !a.equals(b))
+                .check((a, b) -> MonetaryConversions.isConversionAvailable(a.getCurrencyCode(), b.getCurrencyCode()));
     }
 }
