@@ -2,16 +2,17 @@ package ca.intware.qt.generators;
 
 import org.javamoney.moneta.Money;
 import org.quicktheories.core.Gen;
+import org.quicktheories.generators.Generate;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
+import javax.money.format.MonetaryFormats;
+import java.util.Arrays;
 import java.util.Locale;
 
 import static org.quicktheories.generators.SourceDSL.bigDecimals;
-import static org.quicktheories.generators.SourceDSL.integers;
 
 public final class MoneyDSL {
-    private static final Locale[] LOCALES = Locale.getAvailableLocales();
 
     public static Gen<Money> money() {
         return bigDecimals().ofBytes(32).withScale(2)
@@ -23,13 +24,19 @@ public final class MoneyDSL {
                 .map(Money::abs);
     }
 
-    private static Gen<CurrencyUnit> currencyUnit() {
-        return locales()
-                .map(locale -> Monetary.getCurrency(locale));
+    public static Gen<CurrencyUnit> currencyUnit() {
+        return Generate.pick(Arrays.asList(
+                Monetary.getCurrency("CNY"),
+                Monetary.getCurrency("EUR"),
+                Monetary.getCurrency("GBP"),
+                Monetary.getCurrency("JPY"),
+                Monetary.getCurrency("USD"),
+                Monetary.getCurrency("RUB"),
+                Monetary.getCurrency("CAD")
+        ));
     }
 
     public static Gen<Locale> locales() {
-        return integers().between(0, LOCALES.length)
-                .map(index -> LOCALES[index]);
+        return Generate.pick(Arrays.asList(MonetaryFormats.getAvailableLocales().toArray(new Locale[]{})));
     }
 }
