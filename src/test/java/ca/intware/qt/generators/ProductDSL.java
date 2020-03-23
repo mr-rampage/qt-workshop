@@ -7,7 +7,7 @@ import static org.quicktheories.generators.SourceDSL.strings;
 
 public final class ProductDSL {
     public static Gen<Product> products() {
-        return strings().allPossible().ofLengthBetween(0, 50)
+        return strings().allPossible().ofLengthBetween(1, 50)
                 .map(Product::new);
     }
 }

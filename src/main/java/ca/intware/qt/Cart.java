@@ -2,7 +2,9 @@ package ca.intware.qt;
 
 import org.javamoney.moneta.Money;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Cart {
     private final List<Product> purchaseList = new ArrayList<>();
@@ -10,6 +12,9 @@ public class Cart {
 
     public Cart (final ProductPriceCatalog productPriceCatalog) {
         Objects.requireNonNull(productPriceCatalog, "price catalog cannot be null");
+        if (productPriceCatalog.getProductList().size() == 0) {
+            throw new IllegalArgumentException("Product Price catalog cannot be empty");
+        }
         this.productPriceCatalog = productPriceCatalog;
     }
 
@@ -19,5 +24,13 @@ public class Cart {
 
     public Money total() {
         throw new UnsupportedOperationException("You complete me...");
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "purchases=" + purchaseList.size() +
+                ", products=" + productPriceCatalog.getProductList().size() +
+                '}';
     }
 }

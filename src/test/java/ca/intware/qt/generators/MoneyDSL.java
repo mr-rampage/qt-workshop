@@ -6,7 +6,6 @@ import org.quicktheories.generators.Generate;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
-import javax.money.format.MonetaryFormats;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
@@ -43,7 +42,7 @@ public final class MoneyDSL {
     }
 
     public static Gen<Locale> locales() {
-        return Generate.pick(new ArrayList<>(MonetaryFormats.getAvailableLocales()));
+        return Generate.constant(Locale.CANADA);
     }
 
     public static Gen<Currency> currencies() {
