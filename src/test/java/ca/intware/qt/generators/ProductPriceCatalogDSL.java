@@ -13,7 +13,7 @@ public class ProductPriceCatalogDSL {
 
     public static Gen<ProductPriceCatalog> productPriceCatalogs() {
         return emptyProductPriceCatalogs()
-                .zip(lists().of(productPrices()).ofSizes(integers().between(0, 500)), (catalog, productPriceList) -> {
+                .zip(lists().of(productPricesWithoutSpecials()).ofSizes(integers().between(0, 500)), (catalog, productPriceList) -> {
                     productPriceList.forEach(productPrice -> catalog.add(productPrice.product, productPrice.price));
                     return catalog;
                 });
@@ -23,7 +23,7 @@ public class ProductPriceCatalogDSL {
         return locales().map(ProductPriceCatalog::new);
     }
 
-    private static Gen<ProductPrice> productPrices() {
+    private static Gen<ProductPrice> productPricesWithoutSpecials() {
         return ProductDSL.products().zip(PriceDSL.prices(), ProductPrice::new);
     }
 

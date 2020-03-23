@@ -42,15 +42,22 @@ Here are some patterns from the [Quick Theories](https://github.com/quicktheorie
 
 # Step 2: Creating generators (15 minutes, +10 minute discussion)
 
-Working with the [quick theories basic generators](https://github.com/quicktheories/QuickTheories), create a generator to generate a random item.
+Working with the [quick theories basic generators](https://github.com/quicktheories/QuickTheories), complete the generator 
+`CartDSL.purchaseList` to generate a list of items to purchase.
 
 # Step 3: Test the property & implement (15 minutes, +10 minute discussion)
 
-Using the `Cart.java`, test a property that you defined in Step 1. If you finish early, test more properties.
+Test the property where the cart total is the sum of the purchase list given all the products have no special prices.
 
 - Try configuring `quick theories` to run through more or fewer examples.
 
-# Step 4: Negative Testing (15 minutes, +10 minute discussion)
+# Step 4: Refactor generator to include expectation (5 minutes, +10 minute discussion)
+
+Refactor the carts generator to produce a random cart and the appropriate expectation.
+
+# Discussion: Adding in special prices (15 minutes)
+
+# Extra: Negative Testing (15 minutes, +10 minute discussion)
 
 - Identify very, very broad properties
 - Apply very, very broad inputs to verify that the system doesn't crash
