@@ -21,7 +21,10 @@ public class Cart {
     }
 
     public Integer total() {
-        throw new UnsupportedOperationException("You complete me...");
+        return this.purchaseList.stream()
+                .map(productPriceCatalog::getProductPrice)
+                .map(price -> price.unitPrice)
+                .reduce(0, Integer::sum);
     }
 
     @Override

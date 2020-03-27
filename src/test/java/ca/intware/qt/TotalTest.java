@@ -13,9 +13,10 @@ public class TotalTest {
     void should_calculate_the_total_of_the_shopping_cart() {
         qt()
                 .forAll(carts())
-                .check(cart -> {
-                    System.out.println(cart);
-                    return true;
+                .check(cartAndTotal -> {
+                    var cart = cartAndTotal._1;
+                    var total = cartAndTotal._2;
+                    return cart.total().equals(total) && cart.total() > 0;
                 });
     }
 }
