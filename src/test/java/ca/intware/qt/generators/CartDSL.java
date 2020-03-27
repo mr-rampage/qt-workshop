@@ -3,6 +3,7 @@ package ca.intware.qt.generators;
 import ca.intware.qt.Cart;
 import ca.intware.qt.Product;
 import ca.intware.qt.ProductPriceCatalog;
+import org.quicktheories.api.Pair;
 import org.quicktheories.core.Gen;
 
 import java.util.List;
@@ -12,12 +13,16 @@ import static org.quicktheories.generators.Generate.pick;
 import static org.quicktheories.generators.SourceDSL.lists;
 
 public final class CartDSL {
-    public static Gen<Cart> carts() {
+    public static Gen<Pair<Cart, Integer>> carts() {
         return productPriceCatalogs()
                 .flatMap(catalog -> purchaseList(catalog).map(purchases -> {
                     var cart = new Cart(catalog);
+                    var expected = purchases.stream()
+                            .map(catalog::getProductPrice)
+                            .map(price -> price.unitPrice)
+                            .reduce(0, Integer::sum);
                     purchases.forEach(cart::add);
-                    return cart;
+                    return Pair.of(cart, expected);
                 }));
     }
 
