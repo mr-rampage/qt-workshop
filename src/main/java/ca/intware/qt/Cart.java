@@ -2,7 +2,9 @@ package ca.intware.qt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Cart {
@@ -30,21 +32,29 @@ public class Cart {
                 .collect(Collectors.partitioningBy(price -> price instanceof PriceWithSpecial));
 
         var totalSpecials = specialAndRegularPriceList.get(true).stream()
-                .map(price -> {
-                    var quantity = purchaseCount.get(price);
-                    var priceWithSpecial = (PriceWithSpecial) price;
-                    var specialPrice = priceWithSpecial.specialPrice;
-                    var specialPriceQuantity = quantity / specialPrice.rebateQuantity;
-                    var regularPriceQuantity = quantity % specialPrice.rebateQuantity;
-                    return specialPrice.rebateTotal.unitPrice * specialPriceQuantity + regularPriceQuantity * price.unitPrice;
-                })
+                .map(calculatePurchaseWithSpecials(purchaseCount))
                 .reduce(0, Integer::sum);
 
         var totalRegular = specialAndRegularPriceList.get(false).stream()
-                .map(price -> price.unitPrice * purchaseCount.get(price))
+                .map(calculatePurchaseWithoutSpecials(purchaseCount))
                 .reduce(0, Integer::sum);
 
         return totalSpecials + totalRegular;
+    }
+
+    private Function<Price, Integer> calculatePurchaseWithoutSpecials(Map<Price, Integer> purchaseCount) {
+        return price -> price.unitPrice * purchaseCount.get(price);
+    }
+
+    private Function<Price, Integer> calculatePurchaseWithSpecials(Map<Price, Integer> purchaseCount) {
+        return price -> {
+            var quantity = purchaseCount.get(price);
+            var priceWithSpecial = (PriceWithSpecial) price;
+            var specialPrice = priceWithSpecial.specialPrice;
+            var specialPriceQuantity = quantity / specialPrice.rebateQuantity;
+            var regularPriceQuantity = quantity % specialPrice.rebateQuantity;
+            return specialPrice.rebateTotal.unitPrice * specialPriceQuantity + regularPriceQuantity * price.unitPrice;
+        };
     }
 
     @Override
