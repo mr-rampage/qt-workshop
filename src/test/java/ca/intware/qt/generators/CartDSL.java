@@ -13,14 +13,18 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static ca.intware.qt.generators.ProductPriceCatalogDSL.productPriceCatalogsWithSpecials;
+import static ca.intware.qt.generators.ProductPriceCatalogDSL.productPriceCatalogsWithoutSpecials;
 import static org.quicktheories.generators.Generate.pick;
 import static org.quicktheories.generators.SourceDSL.integers;
 import static org.quicktheories.generators.SourceDSL.lists;
 
 public final class CartDSL {
-    public static Gen<Pair<Cart, Integer>> carts(Gen<ProductPriceCatalog> generator) {
-        return generator
-                .flatMap(catalog -> purchaseList(catalog).map(createCart(catalog)));
+    public static Gen<Pair<Cart, Integer>> carts() {
+        return productPriceCatalogsWithoutSpecials()
+                .flatMap(catalog -> purchaseList(catalog).map(createCart(catalog)))
+                .mix(productPriceCatalogsWithSpecials()
+                        .flatMap(catalog -> purchaseListWithSpecials(catalog).map(createCart(catalog))), 25);
     }
 
     /**
@@ -29,7 +33,7 @@ public final class CartDSL {
      * @param productPriceCatalog product price catalog
      * @return A Gen of List of Product
      */
-    private static Gen<Pair<List<Product>, Integer>> purchaseList(ProductPriceCatalog productPriceCatalog) {
+    public static Gen<Pair<List<Product>, Integer>> purchaseList(ProductPriceCatalog productPriceCatalog) {
         return lists().of(getProduct(productPriceCatalog)).ofSizeBetween(1, 10)
                 .map(productAndPrice -> Pair.of(
                         productAndPrice.stream().map(pair -> pair._1).collect(Collectors.toList()),
@@ -37,7 +41,7 @@ public final class CartDSL {
                 ));
     }
 
-    private static Gen<Pair<List<Product>, Integer>> purchaseListWithSpecials(ProductPriceCatalog productPriceCatalog) {
+    public static Gen<Pair<List<Product>, Integer>> purchaseListWithSpecials(ProductPriceCatalog productPriceCatalog) {
         return lists().of(getSpecialProduct(productPriceCatalog)).ofSizeBetween(1, 10)
                 .map(purchaseAndTotal -> {
                     var flattenedList = purchaseAndTotal.stream()
@@ -70,7 +74,7 @@ public final class CartDSL {
                     var quantity = price.specialPrice.rebateQuantity * multiplier;
                     var total = price.specialPrice.rebateTotal.unitPrice * multiplier;
                     return Pair.of(
-                            IntStream.of(quantity).mapToObj(index -> product).collect(Collectors.toList()),
+                            IntStream.range(0, quantity).mapToObj(index -> product).collect(Collectors.toList()),
                             total
                     );
                 });

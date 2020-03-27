@@ -8,7 +8,7 @@ import static org.quicktheories.generators.SourceDSL.integers;
 
 public final class SpecialPriceDSL {
     public static Gen<SpecialPrice> specialPrices() {
-        return integers().allPositive()
+        return integers().between(1, 10)
                 .zip(prices(), SpecialPrice::new);
     }
 }
