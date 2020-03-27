@@ -14,6 +14,7 @@ public class TotalTest {
         qt()
                 .forAll(carts())
                 .check(cartAndTotal -> {
+                    System.out.println(cartAndTotal);
                     var cart = cartAndTotal._1;
                     var total = cartAndTotal._2;
                     return cart.total().equals(total) && cart.total() > 0;

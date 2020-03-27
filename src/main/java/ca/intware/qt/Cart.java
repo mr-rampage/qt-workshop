@@ -3,6 +3,7 @@ package ca.intware.qt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Cart {
     private final List<Product> purchaseList = new ArrayList<>();
@@ -21,10 +22,29 @@ public class Cart {
     }
 
     public Integer total() {
-        return this.purchaseList.stream()
-                .map(productPriceCatalog::getProductPrice)
-                .map(price -> price.unitPrice)
+        var purchaseCount = purchaseList.stream().collect(
+                Collectors.toMap(productPriceCatalog::getProductPrice, value -> 1, Integer::sum)
+        );
+
+        var specialAndRegularPriceList = purchaseCount.keySet().stream()
+                .collect(Collectors.partitioningBy(price -> price instanceof PriceWithSpecial));
+
+        var totalSpecials = specialAndRegularPriceList.get(true).stream()
+                .map(price -> {
+                    var quantity = purchaseCount.get(price);
+                    var priceWithSpecial = (PriceWithSpecial) price;
+                    var specialPrice = priceWithSpecial.specialPrice;
+                    var specialPriceQuantity = quantity / specialPrice.rebateQuantity;
+                    var regularPriceQuantity = quantity % specialPrice.rebateQuantity;
+                    return specialPrice.rebateTotal.unitPrice * specialPriceQuantity + regularPriceQuantity * price.unitPrice;
+                })
                 .reduce(0, Integer::sum);
+
+        var totalRegular = specialAndRegularPriceList.get(false).stream()
+                .map(price -> price.unitPrice * purchaseCount.get(price))
+                .reduce(0, Integer::sum);
+
+        return totalSpecials + totalRegular;
     }
 
     @Override
