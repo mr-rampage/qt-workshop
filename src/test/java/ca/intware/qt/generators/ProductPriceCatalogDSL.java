@@ -12,7 +12,7 @@ import static org.quicktheories.generators.SourceDSL.lists;
 
 public class ProductPriceCatalogDSL {
 
-    public static Gen<ProductPriceCatalog> productPriceCatalogs() {
+    public static Gen<ProductPriceCatalog> productPriceCatalogsWithoutSpecials() {
         return emptyProductPriceCatalogs()
                 .zip(lists().of(productPricesWithoutSpecials()).ofSizes(integers().between(1, 500)), (catalog, productPriceList) -> {
                     productPriceList.forEach(productPrice -> catalog.add(productPrice._1, productPrice._2));

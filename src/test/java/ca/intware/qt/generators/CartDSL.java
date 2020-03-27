@@ -9,38 +9,18 @@ import org.quicktheories.core.Gen;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static ca.intware.qt.generators.ProductPriceCatalogDSL.productPriceCatalogs;
-import static ca.intware.qt.generators.ProductPriceCatalogDSL.productPriceCatalogsWithSpecials;
 import static org.quicktheories.generators.Generate.pick;
 import static org.quicktheories.generators.SourceDSL.integers;
 import static org.quicktheories.generators.SourceDSL.lists;
 
 public final class CartDSL {
-    public static Gen<Pair<Cart, Integer>> carts() {
-        return productPriceCatalogs()
-                .flatMap(catalog -> purchaseList(catalog).map(purchases -> {
-                    var cart = new Cart(catalog);
-                    var expected = purchases.stream()
-                            .map(catalog::getProductPrice)
-                            .map(price -> price.unitPrice)
-                            .reduce(0, Integer::sum);
-                    purchases.forEach(cart::add);
-                    return Pair.of(cart, expected);
-                }));
-    }
-
-    public static Gen<Pair<Cart, Integer>> cartsWithSpecials() {
-        return productPriceCatalogsWithSpecials()
-                .flatMap(catalog -> purchaseListWithSpecials(catalog)
-                        .map(purchaseList -> {
-                            var cart = new Cart(catalog);
-                            purchaseList._1.forEach(cart::add);
-                            return Pair.of(cart, purchaseList._2);
-                        })
-                );
+    public static Gen<Pair<Cart, Integer>> carts(Gen<ProductPriceCatalog> generator) {
+        return generator
+                .flatMap(catalog -> purchaseList(catalog).map(createCart(catalog)));
     }
 
     /**
@@ -49,8 +29,12 @@ public final class CartDSL {
      * @param productPriceCatalog product price catalog
      * @return A Gen of List of Product
      */
-    private static Gen<List<Product>> purchaseList(ProductPriceCatalog productPriceCatalog) {
-        return lists().of(getProduct(productPriceCatalog)).ofSizeBetween(1, 10);
+    private static Gen<Pair<List<Product>, Integer>> purchaseList(ProductPriceCatalog productPriceCatalog) {
+        return lists().of(getProduct(productPriceCatalog)).ofSizeBetween(1, 10)
+                .map(productAndPrice -> Pair.of(
+                        productAndPrice.stream().map(pair -> pair._1).collect(Collectors.toList()),
+                        productAndPrice.stream().map(pair -> pair._2).reduce(0, Integer::sum)
+                ));
     }
 
     private static Gen<Pair<List<Product>, Integer>> purchaseListWithSpecials(ProductPriceCatalog productPriceCatalog) {
@@ -71,8 +55,12 @@ public final class CartDSL {
                 });
     }
 
-    private static Gen<Product> getProduct(ProductPriceCatalog productPriceCatalog) {
-        return pick(productPriceCatalog.getProductList());
+    private static Gen<Pair<Product, Integer>> getProduct(ProductPriceCatalog productPriceCatalog) {
+        return pick(productPriceCatalog.getProductList())
+                .map(product -> {
+                    var price = productPriceCatalog.getProductPrice(product);
+                    return Pair.of(product, price.unitPrice);
+                });
     }
 
     private static Gen<Pair<List<Product>, Integer>> getSpecialProduct(ProductPriceCatalog productPriceCatalog) {
@@ -86,6 +74,14 @@ public final class CartDSL {
                             total
                     );
                 });
+    }
+
+    private static Function<Pair<List<Product>, Integer>, Pair<Cart, Integer>> createCart(ProductPriceCatalog catalog) {
+        return purchases -> {
+            var cart = new Cart(catalog);
+            purchases._1.forEach(cart::add);
+            return Pair.of(cart, purchases._2);
+        };
     }
 }
 
