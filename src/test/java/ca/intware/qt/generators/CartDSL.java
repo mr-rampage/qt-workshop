@@ -8,6 +8,8 @@ import org.quicktheories.core.Gen;
 import java.util.List;
 
 import static ca.intware.qt.generators.ProductPriceCatalogDSL.productPriceCatalogs;
+import static org.quicktheories.generators.Generate.pick;
+import static org.quicktheories.generators.SourceDSL.lists;
 
 public final class CartDSL {
     public static Gen<Cart> carts() {
@@ -19,7 +21,6 @@ public final class CartDSL {
                 }));
     }
 
-
     /**
      * Creates a list of random products from a product price catalog
      *
@@ -27,6 +28,10 @@ public final class CartDSL {
      * @return A Gen of List of Product
      */
     private static Gen<List<Product>> purchaseList(ProductPriceCatalog productPriceCatalog) {
-        throw new UnsupportedOperationException("You complete me...");
+        return lists().of(getProduct(productPriceCatalog)).ofSizeBetween(1, 10);
+    }
+
+    private static Gen<Product> getProduct(ProductPriceCatalog productPriceCatalog) {
+        return pick(productPriceCatalog.getProductList());
     }
 }
