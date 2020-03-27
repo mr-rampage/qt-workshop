@@ -9,7 +9,7 @@ import static org.quicktheories.generators.SourceDSL.integers;
 
 public final class PriceDSL {
     public static Gen<Price> prices() {
-        return integers().allPositive().map(Price::new);
+        return integers().between(1, 10000).map(Price::new);
     }
 
     public static Gen<Price> pricesWithSpecials() {
