@@ -20,12 +20,24 @@ public class ProductPriceCatalogDSL {
                 });
     }
 
+    public static Gen<ProductPriceCatalog> productPriceCatalogsWithSpecials() {
+        return emptyProductPriceCatalogs()
+                .zip(lists().of(productPricesWithSpecials()).ofSizes(integers().between(1, 500)), (catalog, productPriceList) -> {
+                    productPriceList.forEach(productPrice -> catalog.add(productPrice._1, productPrice._2));
+                    return catalog;
+                });
+    }
+
     private static Gen<ProductPriceCatalog> emptyProductPriceCatalogs() {
         return locales().map(ProductPriceCatalog::new);
     }
 
     private static Gen<Pair<Product, Price>> productPricesWithoutSpecials() {
         return ProductDSL.products().zip(PriceDSL.prices(), Pair::of);
+    }
+
+    private static Gen<Pair<Product, Price>> productPricesWithSpecials() {
+        return ProductDSL.products().zip(PriceDSL.pricesWithSpecials(), Pair::of);
     }
 
 }
