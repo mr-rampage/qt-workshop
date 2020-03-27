@@ -1,7 +1,5 @@
 package ca.intware.qt;
 
-import org.javamoney.moneta.Money;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +20,7 @@ public class Cart {
         purchaseList.add(new Product(product));
     }
 
-    public Money total() {
+    public Integer total() {
         throw new UnsupportedOperationException("You complete me...");
     }
 
