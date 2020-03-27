@@ -1,5 +1,6 @@
 package ca.intware.qt;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import static javax.money.convert.MonetaryConversions.getConversion;
 import static org.quicktheories.QuickTheory.qt;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@Disabled
 public class IdempotentTest {
     @Test
     void test_applying_absolute_multiple_times() {

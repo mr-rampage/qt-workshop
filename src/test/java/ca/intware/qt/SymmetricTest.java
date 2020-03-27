@@ -1,6 +1,7 @@
 package ca.intware.qt;
 
 import org.javamoney.moneta.Money;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import static org.quicktheories.QuickTheory.qt;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class SymmetricTest {
     @Test
+    @Disabled
     void test_conversions_symmetry() {
         qt()
                 .forAll(money(), currencyUnit())
@@ -32,6 +34,7 @@ public class SymmetricTest {
     }
 
     @Test
+    @Disabled
     void test_conversion_from_gbp_cny() {
         var money = Money.of(1310.72, "GBP");
         var toGBP = getConversion(money.getCurrency());

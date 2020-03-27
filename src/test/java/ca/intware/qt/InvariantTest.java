@@ -1,6 +1,7 @@
 package ca.intware.qt;
 
 import org.javamoney.moneta.Money;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import static ca.intware.qt.generators.MoneyDSL.money;
 import static org.quicktheories.QuickTheory.qt;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@Disabled
 public class InvariantTest {
 
     @Test
